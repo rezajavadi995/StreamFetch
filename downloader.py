@@ -22,14 +22,10 @@ def loading(text="Loading"):
         time.sleep(0.1)
     print("\r" + " " * 30 + "\r", end="")
     
-#def is_valid_url(url):
-    #return "youtube.com" in url or "youtu.be" in url or "soundcloud.com" in url
-
 def is_valid_url(url):
     pattern = r"(youtube\.com|youtu\.be|soundcloud\.com)"
     return re.search(pattern, url) is not None
     
-
 def get_info(url):
     ydl_opts = {
         'quiet': True,
@@ -41,8 +37,7 @@ def get_info(url):
     }
     with YoutubeDL(ydl_opts) as ydl:
         return ydl.extract_info(url, download=False)
-
-
+        
 def progress_hook(d):
     if d['status'] == 'downloading':
         speed = d.get('_speed_str') or "N/A"
@@ -51,7 +46,6 @@ def progress_hook(d):
         print(f"\r⬇️ {percent} | Speed: {speed} | ETA: {eta}", end='')
     elif d['status'] == 'finished':
         print("\nProcessing file...")
-
 
 def download(url, choice):
     if choice == "1":
@@ -81,37 +75,39 @@ def download(url, choice):
 
 def download_with_retry(url, choice, retries=3):
     for attempt in range(retries):
+
         try:
             print(f"\n⬇️ Attempt {attempt+1}/{retries}")
-            download(url, choice)
-            return True
-        except Exception as e:
-            print(f"❌ Failed attempt {attempt+1}: {e}")
 
+            download(url, choice)
+
+            return True
+
+        except Exception as e:
+
+            print(f"❌ Failed attempt {attempt+1}: {e}")
+            if "not a bot" in str(e).lower():
+                print("🚫 YouTube blocked this request.")
+                return False
             if attempt < retries - 1:
                 print("🔁 Retrying...\n")
                 time.sleep(2)
 
     return False
-
-
+    
 def main():
     clear_screen()
     print("="*40)
     print("🔥 StreamFetch v1.0.0")
     print("   Media Downloader for free")
     print("="*40 + "\n")
-   # print("\n🔥 Termux Media Downloader (yt-dlp)\n")
-    
 
     url = input("Enter URL: ").strip()
     loading("Checking URL")
     if not is_valid_url(url):
         print("❌ Invalid URL!")
         sys.exit()
-
-    
-
+        
     print("\n📦 Fetching info...\n")
 
     try:
@@ -136,13 +132,16 @@ def main():
     if confirm != "y":
         print("❌ Cancelled.")
         sys.exit()
-
     print("\n⬇️ Download starting...\n")
-
     try:
         success = download_with_retry(url, choice)
-        print("\n\n✅ Download completed successfully!")
-        print(f"📁 Saved in: {DOWNLOAD_DIR}")
+        if success:
+            print("\n\n✅ Download completed successfully!")
+            print(f"📁 Saved in: {DOWNLOAD_DIR}")
+
+        else:
+            print("\n❌ Download failed after all retries.")
+                
     except Exception as e:
         print("\n❌ Download failed:", e)
 
