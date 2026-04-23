@@ -34,6 +34,7 @@ def get_info(url):
     ydl_opts = {
         'quiet': True,
         'skip_download': True,
+        'js_runtimes': 'node',
     }
 
     with YoutubeDL(ydl_opts) as ydl:
@@ -68,6 +69,7 @@ def download(url, choice):
         'progress_hooks': [progress_hook],
         'postprocessors': post,
         'noplaylist': True,
+        'js_runtimes': 'node',
     }
 
     with YoutubeDL(ydl_opts) as ydl:
