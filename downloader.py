@@ -99,6 +99,5 @@ def main():
     except Exception as e:
         print("\n❌ Download failed:", e)
 
-
-if name == "main":
+if __name__ == "__main__":
     main()
