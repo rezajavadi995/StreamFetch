@@ -1,8 +1,11 @@
 # StreamFetch
 
-Terminal-based media downloader for Termux, powered by yt-dlp and FFmpeg.
+🇺🇸 English | 🇮🇷 [فارسی](README_FA.md)
 
-[فارسی (Persian)](README_FA.md)
+>**If you enjoyed this project, feel free to leave a ⭐ on GitHub.**
+
+**Terminal-based media downloader for Termux, powered by yt-dlp and FFmpeg.**
+
 
 ---
 
